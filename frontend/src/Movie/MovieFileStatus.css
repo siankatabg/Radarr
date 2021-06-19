@@ -2,3 +2,15 @@
   display: flex;
   justify-content: center;
 }
+
+.missingUnmonitored {
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(45deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+  }
+}
+
+.missingMonitored {
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(90deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+  }
+}

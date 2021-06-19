@@ -36,7 +36,7 @@ Label.propTypes = {
   kind: PropTypes.oneOf(kinds.all).isRequired,
   size: PropTypes.oneOf(sizes.all).isRequired,
   outline: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   colorImpairedMode: PropTypes.bool
 };
 

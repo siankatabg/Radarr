@@ -1,8 +1,8 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Label from 'Components/Label';
 import { kinds } from 'Helpers/Props';
-import MovieQuality from 'Movie/MovieQuality';
 import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
 import translate from 'Utilities/String/translate';
 import styles from './MovieFileStatus.css';
@@ -13,7 +13,8 @@ function MovieFileStatus(props) {
     monitored,
     movieFile,
     queueStatus,
-    queueState
+    queueState,
+    colorImpairedMode
   } = props;
 
   const hasMovieFile = !!movieFile;
@@ -25,11 +26,10 @@ function MovieFileStatus(props) {
     return (
       <div className={styles.center}>
         <Label
-          title={queueStatusText}
+          title=" "
           kind={kinds.QUEUE}
-        >
-          {queueStatusText}
-        </Label>
+        />
+        {queueStatusText}
       </div>
     );
   }
@@ -39,39 +39,45 @@ function MovieFileStatus(props) {
 
     return (
       <div className={styles.center}>
-        <MovieQuality
-          title={quality.quality.name}
-          size={movieFile.size}
-          quality={quality}
-          isMonitored={monitored}
-          isCutoffNotMet={movieFile.qualityCutoffNotMet}
+        <Label
+          title=" "
+          kind={monitored ? kinds.SUCCESS : kinds.DEFAULT}
         />
+        {quality.quality.name}
       </div>
     );
   }
 
   if (!monitored) {
     return (
-      <div className={styles.center}>
+      <div className={classNames(
+        styles.center,
+        styles.missingUnmonitored,
+        colorImpairedMode && 'colorImpaired'
+      )}
+      >
         <Label
-          title={translate('NotMonitored')}
+          title=" "
           kind={kinds.WARNING}
-        >
-          {translate('NotMonitored')}
-        </Label>
+        />
+        {translate('NotMonitored')}
       </div>
     );
   }
 
   if (hasReleased) {
     return (
-      <div className={styles.center}>
+      <div className={classNames(
+        styles.center,
+        styles.missingMonitored,
+        colorImpairedMode && 'colorImpaired'
+      )}
+      >
         <Label
-          title={translate('MovieAvailableButMissing')}
+          title=" "
           kind={kinds.DANGER}
-        >
-          {translate('Missing')}
-        </Label>
+        />
+        {translate('Missing')}
       </div>
     );
   }
@@ -79,11 +85,10 @@ function MovieFileStatus(props) {
   return (
     <div className={styles.center}>
       <Label
-        title={translate('NotAvailable')}
+        title=" "
         kind={kinds.INFO}
-      >
-        {translate('NotAvailable')}
-      </Label>
+      />
+      {translate('NotAvailable')}
     </div>
   );
 }
@@ -93,7 +98,8 @@ MovieFileStatus.propTypes = {
   monitored: PropTypes.bool.isRequired,
   movieFile: PropTypes.object,
   queueStatus: PropTypes.string,
-  queueState: PropTypes.string
+  queueState: PropTypes.string,
+  colorImpairedMode: PropTypes.bool.isRequired
 };
 
 export default MovieFileStatus;
